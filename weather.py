@@ -1,16 +1,20 @@
 import requests
+from dotenv import load_dotenv
+import os
 
-API_KEY = "c1024d4f098c1483b28503764858c9ec"
+# Load environment variables from .env file
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
 city = input("Enter a city name: ")
 
-# Get latitude, longitude, and weather data in a single block
 try:
     # Fetch geolocation data
     geocode_response = requests.get(
         "http://api.openweathermap.org/geo/1.0/direct",
         params={"q": city, "appid": API_KEY}
     )
-    geocode_response.raise_for_status()  # Raise an error for bad responses
+    geocode_response.raise_for_status()
     geocode_data = geocode_response.json()[0]
     lat, lon = geocode_data['lat'], geocode_data['lon']
 
