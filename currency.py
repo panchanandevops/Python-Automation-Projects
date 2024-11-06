@@ -28,15 +28,24 @@ def convert_currency(base):
     return None
 
 while True:
-    base = input("Enter the base currency (q for quit): ").upper()
+    # Display supported currencies to the user
+    print(f"\nSupported currencies: {', '.join(CURRENCIES)}")
+    base = input("Enter the base currency (or 'Q' to quit): ").upper()
 
+    # Check if the user wants to quit
     if base == "Q":
         break
+
+    # Validate if the base currency is in the supported list
+    if base not in CURRENCIES:
+        print("Invalid currency. Please choose from the supported currencies.")
+        continue
 
     data = convert_currency(base)
     if not data:
         continue
 
+    # Remove the base currency from the output and print the results
     del data[base]
     for ticker, value in data.items():
         print(f"{ticker}: {value}")
