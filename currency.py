@@ -7,18 +7,22 @@ load_dotenv()
 
 # Get the API key from the environment variable
 API_KEY = os.getenv("CURRENCY_API_KEY")
-BASE_URL = f"https://api.freecurrencyapi.com/v1/latest?apikey={API_KEY}"
+
 
 CURRENCIES = ["USD", "CAD", "EUR", "AUD", "CNY"]
+currencies = ",".join(CURRENCIES)
 
 def convert_currency(base):
-    currencies = ",".join(CURRENCIES)
-    url = f"{BASE_URL}&base_currency={base}&currencies={currencies}"
     try:
-        response = requests.get(url)
+        response = requests.get(
+            "https://api.freecurrencyapi.com/v1/latest",
+            params={"apikey": API_KEY, "base_currency": base, "currencies": currencies}
+        )
+
         response.raise_for_status()  # Raise an error for bad responses
         data = response.json()
         return data["data"]
+    
     except requests.exceptions.HTTPError as err:
         print(f"HTTP error occurred: {err}")
     except ValueError:
